@@ -69,13 +69,34 @@ export default function Index() {
     
     setIsSubmitting(true);
     
-    const mailtoLink = `mailto:email@btbsales.ru?subject=Заявка на программу обучения&body=Имя: ${encodeURIComponent(formData.name)}%0D%0AEmail: ${encodeURIComponent(formData.email)}%0D%0AТелефон: ${encodeURIComponent(formData.phone)}`;
-    
-    window.location.href = mailtoLink;
-    
-    toast.success('Спасибо! Ваша заявка отправляется');
-    setFormData({ name: '', email: '', phone: '', agree: false });
-    setIsSubmitting(false);
+    try {
+      const response = await fetch('https://functions.poehali.dev/0dda9b16-5710-45b1-a07c-ca0a458a0ed0', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok && data.success) {
+        toast.success('Спасибо! Ваша заявка успешно отправлена');
+        setFormData({ name: '', email: '', phone: '', agree: false });
+        setErrors({});
+      } else {
+        toast.error(data.error || 'Произошла ошибка при отправке');
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      toast.error('Не удалось отправить заявку. Проверьте подключение к интернету');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const scrollToForm = () => {
