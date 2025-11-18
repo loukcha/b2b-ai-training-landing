@@ -15,6 +15,7 @@ import { toast } from 'sonner';
 
 export default function Index() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -101,6 +102,12 @@ export default function Index() {
 
   const scrollToForm = () => {
     document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
+    setIsMobileMenuOpen(false);
+  };
+
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -112,10 +119,73 @@ export default function Index() {
       >
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="text-2xl font-bold gradient-text">Нейросети для B2B-продаж</div>
-          <a href="tel:+79267318859" className="text-lg font-semibold text-primary hover:text-secondary transition-colors">
-            +7 926 731 88 59
-          </a>
+          
+          <nav className="hidden md:flex items-center gap-6">
+            <button onClick={() => scrollToSection('benefits')} className="text-sm font-medium hover:text-primary transition-colors">
+              Результаты
+            </button>
+            <button onClick={() => scrollToSection('program')} className="text-sm font-medium hover:text-primary transition-colors">
+              Программа
+            </button>
+            <button onClick={() => scrollToSection('pricing')} className="text-sm font-medium hover:text-primary transition-colors">
+              Стоимость
+            </button>
+            <a href="tel:+79267318859" className="text-lg font-semibold text-primary hover:text-secondary transition-colors">
+              +7 926 731 88 59
+            </a>
+          </nav>
+          
+          <div className="flex items-center gap-4 md:hidden">
+            <a href="tel:+79267318859" className="text-primary">
+              <Icon name="Phone" size={24} />
+            </a>
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-primary p-2"
+              aria-label="Меню"
+            >
+              <Icon name={isMobileMenuOpen ? 'X' : 'Menu'} size={28} />
+            </button>
+          </div>
         </div>
+        
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-white border-t border-gray-200 shadow-lg">
+            <nav className="container mx-auto px-4 py-4 flex flex-col gap-4">
+              <button
+                onClick={() => scrollToSection('benefits')}
+                className="text-left py-2 font-medium hover:text-primary transition-colors"
+              >
+                Результаты
+              </button>
+              <button
+                onClick={() => scrollToSection('program')}
+                className="text-left py-2 font-medium hover:text-primary transition-colors"
+              >
+                Программа
+              </button>
+              <button
+                onClick={() => scrollToSection('pricing')}
+                className="text-left py-2 font-medium hover:text-primary transition-colors"
+              >
+                Стоимость
+              </button>
+              <button
+                onClick={scrollToForm}
+                className="text-left py-2 font-medium hover:text-primary transition-colors"
+              >
+                Оставить заявку
+              </button>
+              <a
+                href="tel:+79267318859"
+                className="flex items-center gap-2 py-2 font-semibold text-primary"
+              >
+                <Icon name="Phone" size={20} />
+                +7 926 731 88 59
+              </a>
+            </nav>
+          </div>
+        )}
       </header>
 
       <section className="relative min-h-screen flex items-center gradient-bg text-white overflow-hidden pt-20">
@@ -243,7 +313,7 @@ export default function Index() {
         </div>
       </section>
 
-      <section className="py-20 gradient-bg text-white">
+      <section id="benefits" className="py-20 gradient-bg text-white">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12">
             Что получает ваша команда за 1 день обучения
@@ -303,7 +373,7 @@ export default function Index() {
         </div>
       </section>
 
-      <section className="py-20 bg-gray-50">
+      <section id="program" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 max-w-4xl">
           <h2 className="text-4xl font-bold text-center mb-12 gradient-text">
             Программа тренинга: 5 ключевых модулей
@@ -448,7 +518,7 @@ export default function Index() {
         </div>
       </section>
 
-      <section className="py-20">
+      <section id="pricing" className="py-20">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12 gradient-text">
             Форматы и стоимость
