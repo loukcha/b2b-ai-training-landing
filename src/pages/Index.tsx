@@ -69,19 +69,13 @@ export default function Index() {
     
     setIsSubmitting(true);
     
-    try {
-      await fetch('mailto:email@btbsales.ru', {
-        method: 'POST',
-        body: JSON.stringify(formData),
-      });
-      
-      toast.success('Спасибо! Программа отправлена на ваш email');
-      setFormData({ name: '', email: '', phone: '', agree: false });
-    } catch (error) {
-      toast.error('Произошла ошибка. Попробуйте позже');
-    } finally {
-      setIsSubmitting(false);
-    }
+    const mailtoLink = `mailto:email@btbsales.ru?subject=Заявка на программу обучения&body=Имя: ${encodeURIComponent(formData.name)}%0D%0AEmail: ${encodeURIComponent(formData.email)}%0D%0AТелефон: ${encodeURIComponent(formData.phone)}`;
+    
+    window.location.href = mailtoLink;
+    
+    toast.success('Спасибо! Ваша заявка отправляется');
+    setFormData({ name: '', email: '', phone: '', agree: false });
+    setIsSubmitting(false);
   };
 
   const scrollToForm = () => {
@@ -96,7 +90,7 @@ export default function Index() {
         }`}
       >
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="text-2xl font-bold gradient-text">B2B Sales</div>
+          <div className="text-2xl font-bold gradient-text">Нейросети для B2B-продаж</div>
           <a href="tel:+79267318859" className="text-lg font-semibold text-primary hover:text-secondary transition-colors">
             +7 926 731 88 59
           </a>
@@ -394,9 +388,11 @@ export default function Index() {
             <Card className="p-8 md:p-12">
               <div className="grid md:grid-cols-3 gap-8 items-center">
                 <div className="md:col-span-1">
-                  <div className="w-48 h-48 mx-auto rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                    <Icon name="User" size={80} className="text-white" />
-                  </div>
+                  <img
+                    src="https://cdn.poehali.dev/files/5f9fb9bf-c2a4-4e66-809b-e5df09e39ded.png"
+                    alt="Николай Лукша"
+                    className="w-48 h-48 mx-auto rounded-full object-cover shadow-lg"
+                  />
                 </div>
                 
                 <div className="md:col-span-2 space-y-4">
@@ -416,9 +412,14 @@ export default function Index() {
                     </div>
                   </div>
                   
-                  <Button variant="link" className="text-primary p-0 h-auto">
-                    Посмотреть видео и статьи тренера →
-                  </Button>
+                  <div className="flex gap-4">
+                    <a href="https://btbsales.ru/trainings/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      Все программы →
+                    </a>
+                    <a href="https://vkvideo.ru/playlist/-228629411_2" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      Видео →
+                    </a>
+                  </div>
                 </div>
               </div>
             </Card>
@@ -580,30 +581,36 @@ export default function Index() {
           <div className="grid md:grid-cols-3 gap-8">
             <div>
               <div className="text-2xl font-bold mb-4">B2B Sales</div>
-              <p className="text-gray-400">Корпоративное обучение для B2B-команд</p>
+              <p className="text-gray-400">Нейросети для B2B-продаж</p>
             </div>
             
             <div>
               <h4 className="font-semibold mb-4">Контакты</h4>
               <div className="space-y-2 text-gray-400">
-                <p>Телефон: +7 926 731 88 59</p>
-                <p>Email: email@btbsales.ru</p>
-                <p>Сайт: www.btbsales.ru</p>
+                <p>
+                  Телефон: <a href="tel:+79267318859" className="hover:text-white transition-colors">+7 926 731 88 59</a>
+                </p>
+                <p>
+                  Email: <a href="mailto:email@btbsales.ru" className="hover:text-white transition-colors">email@btbsales.ru</a>
+                </p>
+                <p>
+                  Сайт: <a href="https://www.btbsales.ru" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">www.btbsales.ru</a>
+                </p>
               </div>
             </div>
             
             <div>
               <h4 className="font-semibold mb-4">Ссылки</h4>
               <div className="space-y-2">
-                <a href="#" className="block text-gray-400 hover:text-white transition-colors">Программы обучения</a>
-                <a href="#" className="block text-gray-400 hover:text-white transition-colors">Статьи</a>
-                <a href="#" className="block text-gray-400 hover:text-white transition-colors">Видео</a>
+                <a href="https://btbsales.ru/trainings/" target="_blank" rel="noopener noreferrer" className="block text-gray-400 hover:text-white transition-colors">Программы обучения B2B продажам</a>
+                <a href="https://btbsales.ru/stati/" target="_blank" rel="noopener noreferrer" className="block text-gray-400 hover:text-white transition-colors">Статьи о продажах</a>
+                <a href="https://vkvideo.ru/playlist/-228629411_2" target="_blank" rel="noopener noreferrer" className="block text-gray-400 hover:text-white transition-colors">Видео о продажах</a>
               </div>
             </div>
           </div>
           
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>© 2024 B2B Sales. Все права защищены. Политика конфиденциальности</p>
+            <p>© 2024 B2B Sales. Все права защищены. <a href="/privacy" className="hover:text-white transition-colors underline">Политика конфиденциальности</a></p>
           </div>
         </div>
       </footer>
