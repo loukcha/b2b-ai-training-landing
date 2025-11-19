@@ -71,7 +71,7 @@ export default function Index() {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('https://functions.poehali.dev/0dda9b16-5710-45b1-a07c-ca0a458a0ed0', {
+      const response = await fetch('/send.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
